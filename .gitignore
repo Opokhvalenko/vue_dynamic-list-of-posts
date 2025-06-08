@@ -1,3 +1,7 @@
+./node_modules
+./dist
+dist
+node_modules
 # Загальні для Node.js/npm
 node_modules/
 .DS_Store # macOS
