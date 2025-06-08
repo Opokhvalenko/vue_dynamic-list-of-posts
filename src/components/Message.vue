@@ -1,14 +1,14 @@
 <script>
 export default {
-  name: "Message",
+  name: 'Message',
   props: {
     type: {
       type: String,
-      default: "is-info", // інші варіанти: is-success, is-danger, is-warning
+      default: 'is-info', // інші варіанти: is-success, is-danger, is-warning
     },
     icon: {
       type: String,
-      default: "", // Наприклад: "fas fa-check", "fas fa-exclamation-triangle"
+      default: '', // Наприклад: "fas fa-check", "fas fa-exclamation-triangle"
     },
     autoClose: {
       type: Number,
@@ -36,11 +36,7 @@ export default {
 </script>
 
 <template>
-  <article
-    v-if="isVisible"
-    class="message"
-    :class="type"
-  >
+  <article v-if="isVisible" class="message" :class="type">
     <div class="message-header">
       <span v-if="icon">
         <i :class="icon" style="margin-right: 8px"></i>
@@ -48,11 +44,7 @@ export default {
 
       <slot name="head">Message</slot>
 
-      <button
-        class="delete"
-        aria-label="delete"
-        @click="close"
-      ></button>
+      <button class="delete" aria-label="delete" @click="close"></button>
     </div>
 
     <div class="message-body">
@@ -61,5 +53,4 @@ export default {
   </article>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

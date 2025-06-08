@@ -1,18 +1,30 @@
 <script>
 export default {
-  name: "TextAreaField",
+  name: 'TextAreaField',
   props: {
-    modelValue: {
-    type: String,
-    default: ''
+    name: {
+      type: String,
+      default: '', // Default to an empty string
+    },
+    placeholder: {
+      type: String,
+      default: '', // Default to an empty string
+    },
+    errorText: {
+      type: String,
+      default: '', // Default to an empty string
+    },
+    hasError: {
+      type: Boolean,
+      default: false, // Default to false
+    },
+    title: {
+      type: String,
+      default: '', // Default to an empty string
+    },
+    // ... modelValue is handled separately below
   },
-    name: String,
-    placeholder: String,
-    title: String,
-    errorText: String,
-    hasError: Boolean,
-  },
-  emits: ["update:modelValue", "removeErr"],
+  emits: ['update:modelValue', 'removeErr'],
 };
 </script>
 
@@ -27,10 +39,13 @@ export default {
         :name="name"
         :placeholder="placeholder"
         :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value); $emit('removeErr')"
         :class="{ 'is-danger': hasError }"
         class="textarea"
         autocomplete="off"
+        @input="
+          $emit('update:modelValue', $event.target.value);
+          $emit('removeErr');
+        "
       ></textarea>
     </div>
 

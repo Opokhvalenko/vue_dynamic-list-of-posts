@@ -1,11 +1,17 @@
 <script>
 export default {
-  name: "NeedToRegister",
+  name: 'NeedToRegister',
   props: {
-    modelValue: String, // Для v-model з Login.vue (значення 'name')
-    errMessage: String, // Для відображення помилки, що передається з Login.vue
+    modelValue: {
+      type: String,
+      default: '',
+    },
+    errMessage: {
+      type: String,
+      default: '',
+    },
   },
-  emits: ["update:modelValue", "onInput"], // Для двостороннього зв'язування і очищення помилки
+  emits: ['update:modelValue', 'onInput'],
 };
 </script>
 
@@ -15,20 +21,26 @@ export default {
       <p>Registration Needed</p>
     </div>
     <div class="message-body">
-      <p>It looks like you don't have an account with this email. Please enter your name to register.</p>
+      <p>
+        It looks like you don't have an account with this email. Please enter
+        your name to register.
+      </p>
       <div class="field mt-3">
         <label class="label" for="user-name">Name</label>
         <div class="control has-icons-left">
           <input
-            type="text"
             id="user-name"
+            type="text"
             name="name"
             class="input"
             placeholder="Enter your name"
             :value="modelValue"
-            @input="$emit('update:modelValue', $event.target.value); $emit('onInput')"
             :class="{ 'is-danger': errMessage }"
             required
+            @input="
+              $emit('update:modelValue', $event.target.value);
+              $emit('onInput');
+            "
           />
           <span class="icon is-small is-left">
             <i class="fas fa-user"></i>
@@ -40,5 +52,4 @@ export default {
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

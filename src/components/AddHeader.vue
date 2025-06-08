@@ -1,25 +1,25 @@
 <script>
-import { getLocalStorage } from "@/utils/getLocalStorage";
+import { getLocalStorage } from '@/utils/getLocalStorage';
 
 export default {
-  name: "Header",
+  name: 'AddHeader',
+  emits: ['logout'],
   data() {
     return {
-      userName: "",
+      userName: '',
     };
   },
-  emits: ["logout"],
   mounted() {
-    const user = getLocalStorage("user");
-    this.userName = user?.name || "";
+    const user = getLocalStorage('user');
+    this.userName = user?.name || '';
   },
   methods: {
     logout() {
-      window.localStorage.removeItem("user");
-      this.$store.commit("setUserId", null);
-      this.$store.commit("addPostList", []);
-      this.$emit("logout");
-      this.$router.push("/login");
+      window.localStorage.removeItem('user');
+      this.$store.commit('setUserId', null);
+      this.$store.commit('addPostList', []);
+      this.$emit('logout');
+      this.$router.push('/login');
     },
   },
 };

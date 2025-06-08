@@ -1,11 +1,11 @@
 <script>
-import { getUserPosts } from "@/api/post";
-import PostLoader from "./PostLoader.vue";
-import Message from "./Message.vue";
+import { getUserPosts } from '@/api/post';
+import PostLoader from './PostLoader.vue';
+import Message from './Message.vue';
 // import { nextTick } from "vue"; // Не використовується, можна видалити
 
 export default {
-  name: "PostsList",
+  name: 'PostsList',
   components: {
     PostLoader,
     Message,
@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       isLoaded: false,
-      errorMessage: "",
+      errorMessage: '',
     };
   },
 
@@ -28,49 +28,53 @@ export default {
       return this.$store.state.userId;
     },
   },
+  mounted() {
+    // Додаємо watcher для userId, щоб завантажувати пости після логіна
+    this.$watch(
+      'userId',
+      (newUserId) => {
+        if (newUserId) {
+          this.loadPosts();
+        } else {
+          this.$store.commit('addPostList', []); // Очищаємо список постів при виході
+        }
+      },
+      { immediate: true },
+    ); // Запускаємо одразу, якщо userId вже є
+  },
   methods: {
     loadPosts() {
       this.isLoaded = true;
-      this.errorMessage = "";
+      this.errorMessage = '';
 
       // Перевіряємо наявність userId перед запитом
       if (!this.userId) {
-        this.errorMessage = "User ID is not set. Please login.";
+        this.errorMessage = 'User ID is not set. Please login.';
         this.isLoaded = false;
         return;
       }
 
       getUserPosts(this.userId)
         .then(({ data }) => {
-          this.$store.commit("addPostList", data);
+          this.$store.commit('addPostList', data);
         })
         .catch((error) => {
-          console.error("Failed to load posts:", error); // Логування помилки
-          this.errorMessage = "Failed to load posts";
+          console.error('Failed to load posts:', error); // Логування помилки
+          this.errorMessage = 'Failed to load posts';
         })
         .finally(() => {
           this.isLoaded = false;
         });
     },
     openPost(post) {
-      this.$store.commit("setCurrentPost", post);
-      this.$store.commit("setInSidebar", "postDetails");
+      this.$store.commit('setCurrentPost', post);
+      this.$store.commit('setInSidebar', 'postDetails');
     },
 
     closePost() {
-      this.$store.commit("setCurrentPost", null);
-      this.$store.commit("setInSidebar", "");
+      this.$store.commit('setCurrentPost', null);
+      this.$store.commit('setInSidebar', '');
     },
-  },
-  mounted() {
-    // Додаємо watcher для userId, щоб завантажувати пости після логіна
-    this.$watch('userId', (newUserId) => {
-      if (newUserId) {
-        this.loadPosts();
-      } else {
-        this.$store.commit("addPostList", []); // Очищаємо список постів при виході
-      }
-    }, { immediate: true }); // Запускаємо одразу, якщо userId вже є
   },
 };
 </script>
@@ -84,7 +88,8 @@ export default {
           <button
             type="button"
             class="button is-link"
-            :disabled="isLoaded || !userId" @click="$store.commit('setInSidebar','creatingPost')"
+            :disabled="isLoaded || !userId"
+            @click="$store.commit('setInSidebar', 'creatingPost')"
           >
             Add New Post
           </button>
@@ -113,17 +118,17 @@ export default {
                 <td class="has-text-right is-vcentered">
                   <button
                     v-if="$store.state.currentPost?.id !== post.id"
-                    @click="openPost(post)"
                     type="button"
                     class="button is-link"
+                    @click="openPost(post)"
                   >
                     Open
                   </button>
                   <button
                     v-else
-                    @click="closePost"
                     type="button"
                     class="button is-link is-light"
+                    @click="closePost"
                   >
                     Close
                   </button>
@@ -133,7 +138,11 @@ export default {
           </table>
         </template>
 
-        <Message v-if="errorMessage !== ''" type="is-danger" icon="fas fa-exclamation-triangle">
+        <Message
+          v-if="errorMessage !== ''"
+          type="is-danger"
+          icon="fas fa-exclamation-triangle"
+        >
           <template #head>
             <p>Error</p>
           </template>

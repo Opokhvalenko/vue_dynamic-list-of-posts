@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "Loader",
+  name: 'Loader',
   props: {
     centered: {
       type: Boolean,
@@ -8,8 +8,8 @@ export default {
     },
     size: {
       type: String,
-      default: "medium", // small, medium, large
-      validator: (value) => ["small", "medium", "large"].includes(value),
+      default: 'medium', // small, medium, large
+      validator: (value) => ['small', 'medium', 'large'].includes(value),
     },
   },
 };

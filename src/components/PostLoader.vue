@@ -1,15 +1,15 @@
 <script>
-import Loader from "./Loader.vue";
+import Loader from './Loader.vue';
 
 export default {
-  name: "PostLoader",
+  name: 'PostLoader',
   components: {
     Loader,
   },
   props: {
     size: {
       type: String,
-      default: "medium", // можна також "small" або "large"
+      default: 'medium', // можна також "small" або "large"
     },
     centered: {
       type: Boolean,
@@ -23,10 +23,9 @@ export default {
   <div
     :class="[
       'mt-2',
-      { 'is-flex is-justify-content-center is-align-items-center': !centered }
+      { 'is-flex is-justify-content-center is-align-items-center': !centered },
     ]"
   >
     <Loader :size="size" :centered="centered" class="mt-2" />
   </div>
 </template>
-

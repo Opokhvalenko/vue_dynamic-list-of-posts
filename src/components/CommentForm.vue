@@ -1,11 +1,12 @@
 <script>
 export default {
-  name: "CommentForm",
+  name: 'CommentForm',
+  emits: ['submit', 'update:modelValue', 'input'],
   data() {
     return {
-      name: "",
-      email: "",
-      comment: "",
+      name: '',
+      email: '',
+      comment: '',
       hasErrorName: false,
       hasErrorComment: false,
     };
@@ -25,12 +26,12 @@ export default {
         body: this.comment.trim(),
       };
 
-      this.$emit("submit", newComment);
+      this.$emit('submit', newComment);
 
       // Скидання полів
-      this.name = "";
-      this.email = "";
-      this.comment = "";
+      this.name = '';
+      this.email = '';
+      this.comment = '';
       this.hasErrorName = false;
       this.hasErrorComment = false;
     },
@@ -47,34 +48,32 @@ export default {
 <template>
   <div>
     <input
+      v-model="name"
       class="input"
       type="text"
       placeholder="Your name"
-      v-model="name"
-      @input="removeNameError"
       :class="{ 'is-danger': hasErrorName }"
+      @input="removeNameError"
     />
     <p v-if="hasErrorName" class="help is-danger">Name is required</p>
 
     <input
+      v-model="email"
       class="input mt-2"
       type="email"
       placeholder="Your email (optional)"
-      v-model="email"
     />
 
     <textarea
+      v-model="comment"
       class="textarea mt-2"
       placeholder="Write your comment..."
-      v-model="comment"
-      @input="removeCommentError"
       :class="{ 'is-danger': hasErrorComment }"
+      @input="removeCommentError"
     ></textarea>
     <p v-if="hasErrorComment" class="help is-danger">Comment cannot be empty</p>
 
-    <button class="button is-primary mt-3" @click="submitComment">
-      Send
-    </button>
+    <button class="button is-primary mt-3" @click="submitComment">Send</button>
   </div>
 </template>
 

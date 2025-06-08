@@ -9,9 +9,9 @@ export default createStore({
   // Стан додатка
   state: {
     userId: initialUserId, // ID поточного залогіненого користувача
-    postList: [],          // Список постів поточного користувача
-    currentPost: null,     // Пост, який зараз відкритий для деталей або редагування
-    inSidebar: '',         // Стан сайдбара: '', 'creatingPost', 'updatingPost', 'postDetails'
+    postList: [], // Список постів поточного користувача
+    currentPost: null, // Пост, який зараз відкритий для деталей або редагування
+    inSidebar: '', // Стан сайдбара: '', 'creatingPost', 'updatingPost', 'postDetails'
   },
 
   // Мутації для зміни стану
@@ -49,7 +49,9 @@ export default createStore({
      * @param {object} updatedPost - Оновлений об'єкт поста.
      */
     updatePost(state, updatedPost) {
-      const index = state.postList.findIndex(post => post.id === updatedPost.id);
+      const index = state.postList.findIndex(
+        (post) => post.id === updatedPost.id,
+      );
       if (index !== -1) {
         state.postList.splice(index, 1, updatedPost);
       }
@@ -61,7 +63,7 @@ export default createStore({
      * @param {number} postId - ID поста для видалення.
      */
     deletePost(state, postId) {
-      state.postList = state.postList.filter(post => post.id !== postId);
+      state.postList = state.postList.filter((post) => post.id !== postId);
     },
 
     /**

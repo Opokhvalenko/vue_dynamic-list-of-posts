@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "Sidebar",
+  name: 'Sidebar',
 
   props: {
     isOpen: Boolean,

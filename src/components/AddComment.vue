@@ -1,107 +1,116 @@
 <script>
-import { createComment } from "@/api/comments";
-import InputField from "./InputField.vue";
-import TextAreaField from "./TextAreaField.vue";
-import Message from "./Message.vue";
+import { createComment } from '@/api/comments';
+import InputField from './InputField.vue';
+import TextAreaField from './TextAreaField.vue';
+import Message from './Message.vue';
 
 export default {
-  name: "AddComment",
+  name: 'AddComment',
   components: {
     InputField,
     TextAreaField,
     Message,
   },
-  emits: ["cancel", "updateCommentsList"],
   props: {
-    postId: Number,
+    postId: {
+      type: Number,
+      required: true,
+    },
   },
+  emits: ['cancel', 'updateCommentsList'],
   data() {
     return {
-      newAuthorName: "",
-      newAuthorEmail: "",
-      newCommentText: "",
+      newAuthorName: '',
+      newAuthorEmail: '',
+      newCommentText: '',
       hasErrorText: false,
       hasErrorName: false,
       hasErrorEmail: false,
       isLoading: false,
-      errorMessage: "",
+      errorMessage: '',
     };
   },
-methods: {
-  createNewComment() {
-    this.errorMessage = "";
-    if (!this.validation()) {
-      return;
-    }
+  methods: {
+    createNewComment() {
+      this.errorMessage = '';
+      if (!this.validation()) {
+        return;
+      }
 
-    const newData = {
-      body: this.newCommentText,
-      email: this.newAuthorEmail,
-      name: this.newAuthorName, // 🔧 тут була помилка
-      postId: this.postId,
-    };
+      const newData = {
+        body: this.newCommentText,
+        email: this.newAuthorEmail,
+        name: this.newAuthorName,
+        postId: this.postId,
+      };
 
-    this.isLoading = true;
-    createComment(newData)
-      .then(({ data }) => {
-        this.newCommentText = "";
-        this.newAuthorName = "";
-        this.newAuthorEmail = "";
-        this.$emit("updateCommentsList", data);
-      })
-      .catch((error) => {console.error("Error creating comment:", error);
-          this.errorMessage = "Failed to add comment. Please try again.";})
-      .finally(() => {
-        this.isLoading = false;
-      });
+      this.isLoading = true;
+      createComment(newData)
+        .then(({ data }) => {
+          this.newCommentText = '';
+          this.newAuthorName = '';
+          this.newAuthorEmail = '';
+          this.$emit('updateCommentsList', data);
+        })
+        .catch((error) => {
+          console.error('Error creating comment:', error);
+          this.errorMessage = 'Failed to add comment. Please try again.';
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+
+    cancel() {
+      this.$emit('cancel');
+    },
+
+    validation() {
+      this.hasErrorName = !this.newAuthorName.trim();
+      this.hasErrorEmail = !this.newAuthorEmail.trim();
+      this.hasErrorText = !this.newCommentText.trim();
+
+      return !(this.hasErrorName || this.hasErrorEmail || this.hasErrorText);
+    },
   },
-
-  cancel() {
-    this.$emit("cancel");
-  },
-
-  validation() {
-    this.hasErrorName = !this.newAuthorName.trim();
-    this.hasErrorEmail = !this.newAuthorEmail.trim();
-    this.hasErrorText = !this.newCommentText.trim();
-
-    return !(this.hasErrorName || this.hasErrorEmail || this.hasErrorText);
-  },
-},
 };
 </script>
 
 <template>
   <form @submit.prevent="createNewComment">
     <InputField
-      title="Author Name"
       v-model.trim="newAuthorName"
-      :hasError="hasErrorName"
+      title="Author Name"
       name="authorName"
       placeholder="Name Surname"
-      errorText="Name is required"
-      @removeErr="hasErrorName = false"
+      error-text="Name is required"
+      :has-error="hasErrorName"
+      @remove-err="hasErrorName = false"
     />
 
     <InputField
-      title="Author Email"
       v-model.trim="newAuthorEmail"
-      :hasError="hasErrorEmail"
+      title="Author Email"
       name="authorEmail"
       placeholder="Your Email"
-      errorText="Email is required"
-      @removeErr="hasErrorEmail = false"
+      error-text="Email is required"
+      :has-error="hasErrorEmail"
+      @remove-err="hasErrorEmail = false"
     />
 
     <TextAreaField
-      title="Write Comment Body"
       v-model.trim="newCommentText"
-      :hasError="hasErrorText"
+      title="Write Comment Body"
       name="commentText"
       placeholder="Comment"
-      errorText="Body is required"
-      @removeErr="hasErrorText = false"
+      error-text="Body is required"
+      :has-error="hasErrorText"
+      @remove-err="hasErrorText = false"
     />
+
+    <Message v-if="errorMessage" :type="'is-danger'">
+      {{ errorMessage }}
+    </Message>
 
     <div class="field is-grouped">
       <div class="control">
@@ -115,10 +124,10 @@ methods: {
       </div>
       <div class="control">
         <button
-          @click="cancel"
           type="reset"
           class="button is-link is-light"
           :disabled="isLoading"
+          @click="cancel"
         >
           Cancel
         </button>

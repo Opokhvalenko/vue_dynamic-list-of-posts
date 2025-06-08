@@ -1,21 +1,21 @@
-import { client } from "./httpClient";
+import { client } from './httpClient';
 
 export const getUserPosts = (userId) => {
-    return client.get(`/posts?userId=${userId}`);
+  return client.get(`/posts?userId=${userId}`);
 };
 
 export const getPosts = () => {
-    return client.get("/posts");
+  return client.get('/posts');
 };
 
 export const createPost = ({ body, title, userId }) => {
-    return client.post("/posts", { body, title, userId });
+  return client.post('/posts', { body, title, userId });
 };
 
 export const updatePost = ({ postId, body, title }) => {
-    return client.patch(`/posts/${postId}`, { body, title });
+  return client.patch(`/posts/${postId}`, { body, title });
 };
 
 export const deletePost = (postId) => {
-    return client.delete(`/posts/${postId}`);
+  return client.delete(`/posts/${postId}`);
 };

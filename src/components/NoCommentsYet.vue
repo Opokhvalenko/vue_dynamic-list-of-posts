@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "NoCommentsYet",
+  name: 'NoCommentsYet',
 };
 </script>
 

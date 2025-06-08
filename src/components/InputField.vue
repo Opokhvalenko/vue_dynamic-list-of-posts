@@ -1,15 +1,33 @@
 <script>
 export default {
-  name: "InputField",
+  name: 'InputField',
   props: {
-    name: String,
-    placeholder: String,
-    errorText: String,
-    modelValue: String,
-    hasError: Boolean,
-    title: String,
+    name: {
+      type: String,
+      default: '',
+    },
+    placeholder: {
+      type: String,
+      default: '',
+    },
+    errorText: {
+      type: String,
+      default: '',
+    },
+    modelValue: {
+      type: String,
+      default: '',
+    },
+    hasError: {
+      type: Boolean,
+      default: false,
+    },
+    title: {
+      type: String,
+      default: '',
+    },
   },
-  emits: ["update:modelValue", 'removeErr'],
+  emits: ['update:modelValue', 'removeErr'],
 };
 </script>
 
@@ -23,15 +41,17 @@ export default {
     </label>
     <div class="control has-icons-left has-icons-right">
       <input
+        :id="`comment-author-name-${name}`"
         type="text"
         :name="name"
-        :id="`comment-author-name-${name}`"
         :placeholder="placeholder"
         class="input"
         :class="{ 'is-danger': hasError }"
         :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value); $emit('removeErr')"
-        
+        @input="
+          $emit('update:modelValue', $event.target.value);
+          $emit('removeErr');
+        "
       />
       <span class="icon is-small is-left">
         <i
@@ -44,15 +64,15 @@ export default {
       </span>
 
       <span
+        v-if="hasError"
         class="icon is-small is-right has-text-danger"
         data-cy="ErrorIcon"
-        v-if="hasError"
       >
         <i class="fas fa-exclamation-triangle"></i>
       </span>
     </div>
 
-    <p class="help is-danger" data-cy="ErrorMessage" v-if="hasError">
+    <p v-if="hasError" class="help is-danger" data-cy="ErrorMessage">
       {{ errorText }}
     </p>
   </div>
