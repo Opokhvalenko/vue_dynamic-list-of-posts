@@ -2,6 +2,8 @@
 import { getUserByEmail, registrationUser } from "@/api/users";
 import { setLocalStorage } from "@/utils/setLocalStorage";
 import NeedToRegister from "./NeedToRegister.vue";
+import { useStore } from "vuex";
+import { ref } from "vue";
 
 export default {
   name: "Login",
@@ -46,50 +48,44 @@ export default {
       return true;
     },
 
-    login() {
+    async login() {
       this.isLoading = true;
-
-      getUserByEmail(this.email)
-        .then(({ data }) => {
-          if (data.length !== 0) {
-            setLocalStorage("user", data[0]);
-            this.$store.commit("setUserId", data[0].id);
-            this.$emit("login");
-          } else {
-            this.needRegistration = true;
-            this.errMessage = "";
-            this.name = ""; 
-            this.errMessageRegistration = "";
-          }
-        })
-        .catch(() => {
-          console.error("Error during login:", error);
-          this.errMessage = "Ops, something went wrong";
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
+      try {
+        const { data } = await getUserByEmail(this.email);
+        if (data.length !== 0) {
+          setLocalStorage("user", data[0]);
+          this.$store.commit("setUserId", data[0].id);
+          this.$emit("login");
+        } else {
+          this.needRegistration = true;
+          this.errMessage = "";
+          this.name = "";
+          this.errMessageRegistration = "";
+        }
+      } catch (error) {
+        console.error("Error during login:", error);
+        this.errMessage = "Ops, something went wrong";
+      } finally {
+        this.isLoading = false;
+      }
     },
 
-    registration() {
+    async registration() { 
       this.isLoading = true;
-
-      registrationUser(this.email, this.name)
-        .then(({ data }) => {
-          setLocalStorage("user", data);
-          this.$store.commit("setUserId", data.id);
-          this.$emit("login");
-        })
-        .catch((error) => {
-          console.error("Error during registration:", error);
-          this.errMessageRegistration = "Ops, something went wrong";
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
+      try {
+        const { data } = await registrationUser(this.email, this.name);
+        setLocalStorage("user", data);
+        this.$store.commit("setUserId", data.id);
+        this.$emit("login");
+      } catch (error) {
+        console.error("Error during registration:", error);
+        this.errMessageRegistration = "Ops, something went wrong";
+      } finally {
+        this.isLoading = false;
+      }
     },
     onEmailInput() {
-      this.errMessage = '';
+      this.errMessage = "";
       this.needRegistration = false;
     },
   },

@@ -67,7 +67,7 @@ export default {
       }
     },
 
-    creatingPost(dataToSend) {
+  creatingPost(dataToSend) {
   createPost(dataToSend)
   .then(({ data }) => {
     this.$store.commit("addPostList", data);

@@ -5,7 +5,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "npm run build && scp -r dist/* user@your-server:/var/www/html/"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
+    "gh-pages": "^6.3.0",
     "sass": "^1.89.1",
     "typescript": "^5.8.3",
     "vite": "^5.2.0"
